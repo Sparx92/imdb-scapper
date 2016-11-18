@@ -35,11 +35,12 @@ const cast = '#titleCast tr';
 const trailer='.slate_wrapper .slate a';
  
 const castArray=[];
-$(cast).each((index,item)=>{
-    let name = $(cast +' img').attr('alt');
-    let img=$(cast +' img').attr('src');
-    let role = $(cast +' .character a').html();
-    let id = $(cast +' .itemprop a').attr('href');
+
+for (var index = 0; index < $(cast).length; index+=1) {
+  let name = $(cast +' img').eq(index).attr('alt');
+    let img=$(cast +' img').eq(index).attr('src');
+    let role = $(cast +' .character div').eq(index).text().trim();
+    let id = $(cast +' .itemprop a').eq(index).attr('href');
 
     castArray.push({
         name, 
@@ -47,7 +48,10 @@ $(cast).each((index,item)=>{
         role,
         id
     });
-});
+    
+}
+
+castArray.pop();
 
 const categoriesArray=[];
 $(categories).each((index,item)=>{
@@ -63,9 +67,9 @@ $(categories).each((index,item)=>{
             //releaseDate:,
             actors:castArray
         };
-console.log(movie);
 
     return Promise.resolve()
         .then(() => {
+            return movie;
         });
 }
