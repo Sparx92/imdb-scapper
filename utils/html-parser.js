@@ -55,7 +55,7 @@ castArray.pop();
 
 const categoriesArray=[];
 $(categories).each((index,item)=>{
-       categoriesArray.push( $(item).html());
+       categoriesArray.push( {category: $(item).html()});
             });
 
         let movie={
