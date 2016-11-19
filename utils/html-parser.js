@@ -74,15 +74,15 @@ module.exports.parseFullMovie = (selectors, html) => {
         });
 };
 
-module.exports.parseActor = (html) => {
+module.exports.parseActor = (selectors, html) => {
     $("body").html(html);
 
-    const profileImage = "#name-poster";
-    const name = "#overview-top .header span";
-    const biography = "#name-bio-text .inline";
-    const moviesName = "#filmography .filmo-category-section:first .filmo-row b a";
-    const moviesImdbId = "#filmography .filmo-category-section:first .filmo-row b a";
-    const moviesCharacterName = "#filmography .filmo-category-section:first .filmo-row";
+    const profileImage = selectors.profileImage;
+    const name = selectors.name;
+    const biography = selectors.biography;
+    const moviesName = selectors.moviesName;
+    const moviesImdbId = selectors.moviesImdbId;
+    const moviesCharacterName = selectors.moviesCharacterName;
 
     const movies = [];
 
@@ -91,12 +91,12 @@ module.exports.parseActor = (html) => {
     const moviesCharacters = $(moviesCharacterName);
 
     for (let i = 0; i < $(moviesName).length; i += 1) {
-        let character = moviesCharacters.eq(i).text().split('\n');
+        let character = moviesCharacters.eq(i).text().split("\n");
 
-        if (character[character.length - 2] == '') {
+        if (character[character.length - 2] == "") {
             character = character[character.length - 3];
         } else {
-            if (character[character.length - 2].indexOf('(') == 0) {
+            if (character[character.length - 2].indexOf("(") == 0) {
                 character = character[character.length - 3];
             } else {
                 character = character[character.length - 2];
@@ -105,7 +105,7 @@ module.exports.parseActor = (html) => {
 
         let movie = {
             name: moviesNames.eq(i).html(),
-            imdbId: moviesIds.eq(i).attr('href'),
+            imdbId: moviesIds.eq(i).attr("href"),
             characterName: character
         };
 
@@ -113,8 +113,8 @@ module.exports.parseActor = (html) => {
     }
 
     let actorName = $(name).text();
-    let image = $(profileImage).attr('src');
-    let description = $(biography).text().split('   ')[0];
+    let image = $(profileImage).attr("src");
+    let description = $(biography).text().split("   ")[0];
 
 
     let actor = {
