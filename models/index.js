@@ -2,15 +2,7 @@
 
 const SimpleMovie = require("./simple-movie-model");
 const FullMovie = require("./full-movie-model");
-
-const moviesToAdd = [];
-
-// const insertManyFullMovies = (movies) => {
-//     console.log("Saved movies");
-//     FullMovie.insertMany(movies, (err) => {
-//         console.log(err);
-//     });
-// };
+const Actor = require("./actor-model");
 
 module.exports = {
     getSimpleMovie(name, url) {
@@ -33,14 +25,21 @@ module.exports = {
         return new FullMovie(movieObject);
     },
     insertFullMovie(movie) {
-        moviesToAdd.push(movie);
         movie.save();
 
         console.log(`Inserted movie ${movie.title}`);
+    },
+    getActor(name, image, description, movies) {
+        return new Actor({
+            name,
+            image,
+            description,
+            movies
+        });
+    },
+    insertActor(actor) {
+        actor.save();
 
-        // if (moviesToAdd.length > 20) {
-        //     insertManyFullMovies(moviesToAdd);
-        //     moviesToAdd.splice(0, moviesToAdd.length);
-        // }
+        console.log(`Inserted actor ${actor.name}`);
     }
 };
