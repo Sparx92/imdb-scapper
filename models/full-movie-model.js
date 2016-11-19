@@ -53,4 +53,5 @@ let FullMovieSchema = new Schema({
 
 mongoose.model("FullMovie", FullMovieSchema);
 FullMovie = mongoose.model("SimpleMovie");
+
 module.exports = FullMovie;
