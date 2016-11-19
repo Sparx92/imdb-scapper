@@ -26,8 +26,8 @@ let FullMovieSchema = new Schema({
     ],
     releaseDate: {
         type: Date,
-        required: true
-
+        required: true,
+        default: Date.now
     },
     actors: [{
         name: {

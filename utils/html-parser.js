@@ -24,23 +24,23 @@ module.exports.parseSimpleMovie = (selector, html) => {
         });
 };
 
-module.exports.parseFullMovie = (html) => {
+module.exports.parseFullMovie = (selectors, html) => {
     $("body").html(html);
 
-    const title = '.title_wrapper h1';
-    const description = '.plot_summary_wrapper .summary_text';
-    const cover = '.poster img';
-    const categories = '.subtext .itemprop';
-    const cast = '#titleCast tr';
-    const trailer = '.slate_wrapper .slate a';
+    const title = selectors.title;
+    const description = selectors.description;
+    const cover = selectors.cover;
+    const categories = selectors.categories;
+    const cast = selectors.cast;
+    const trailer = selectors.trailer;
 
     const castArray = [];
 
-    for (var index = 0; index < $(cast).length - 1; index += 1) {
-        let name = $(cast + ' img').eq(index).attr('alt');
-        let img = $(cast + ' img').eq(index).attr('src');
-        let role = $(cast + ' .character div').eq(index).text().trim();
-        let id = $(cast + ' .itemprop a').eq(index).attr('href');
+    for (let index = 0; index < $(cast).length - 1; index += 1) {
+        let name = $(cast + " img").eq(index).attr("alt");
+        let img = $(cast + " img").eq(index).attr("src");
+        let role = $(cast + " .character div").eq(index).text().trim();
+        let id = $(cast + " .itemprop a").eq(index).attr("href");
 
         castArray.push({
             name,
@@ -52,24 +52,24 @@ module.exports.parseFullMovie = (html) => {
     }
 
     const categoriesArray = [];
-    $(categories).each((index, item) => {
+    $(categories).each((i, item) => {
         categoriesArray.push(
             $(item).html()
         );
     });
 
     let movie = {
-        coverImageLink: $(cover).attr('src'),
-        trailer: $(trailer).attr('href'),
+        coverImageLink: $(cover).attr("src"),
+        trailer: $(trailer).attr("href"),
         title: $(title).text().trim(),
         description: $(description).html().trim(),
         categories: categoriesArray,
-        //releaseDate:,
         actors: castArray
+            //releaseDate: 
     };
 
     return Promise.resolve()
         .then(() => {
             return movie;
         });
-}
+};

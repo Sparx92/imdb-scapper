@@ -26,20 +26,20 @@ function getMoviesFromUrl(url, selector) {
             movies.forEach(function (movie) {
                 httpRequester.get(imdbHostString + movie.url)
                     .then((result) => {
-                        return htmlParser.parseFullMovie(result.body);
+                        return htmlParser.parseFullMovie(constants.fullMovieSelector, result.body);
                     })
-                    .then(movie => {
-                        movie = modelsFactory.getFullMovie(
-                            movie.coverImageLink,
-                            movie.trailer,
-                            movie.title,
-                            movie.description,
-                            movie.categories,
-                            Date.now(),
-                            movie.actors
+                    .then(parsedMovie => {
+                        let dbMovie = modelsFactory.getFullMovie(
+                            parsedMovie.coverImageLink,
+                            parsedMovie.trailer,
+                            parsedMovie.title,
+                            parsedMovie.description,
+                            parsedMovie.categories,
+                            parsedMovie.releaseDate,
+                            parsedMovie.actors
                         );
 
-                        modelsFactory.insertFullMovie(movie);
+                        modelsFactory.insertFullMovie(dbMovie);
                     })
                     .catch(err => {
                         console.log(err);
