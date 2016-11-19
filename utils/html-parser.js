@@ -116,7 +116,6 @@ module.exports.parseActor = (selectors, html) => {
     let image = $(profileImage).attr("src");
     let description = $(biography).text().split("   ")[0];
 
-
     let actor = {
         actorName,
         image,
