@@ -21,15 +21,13 @@ let FullMovieSchema = new Schema({
         type: String,
         required: true
     },
-    categories: [{
-        category: {
-            type: String,
-            required: true
-        }
-    }],
+    categories: [
+        [String]
+    ],
     releaseDate: {
         type: Date,
         required: true
+
     },
     actors: [{
         name: {
@@ -51,7 +49,6 @@ let FullMovieSchema = new Schema({
     }]
 });
 
-mongoose.model("FullMovie", FullMovieSchema);
-FullMovie = mongoose.model("SimpleMovie");
+let FullMovie = mongoose.model("FullMovie", FullMovieSchema);
 
 module.exports = FullMovie;

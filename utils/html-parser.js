@@ -24,7 +24,7 @@ module.exports.parseSimpleMovie = (selector, html) => {
         });
 };
 
-module.exports.parseFullMovie = (selector, html) => {
+module.exports.parseFullMovie = (html) => {
     $("body").html(html);
 
     const title = '.title_wrapper h1';
@@ -36,7 +36,7 @@ module.exports.parseFullMovie = (selector, html) => {
 
     const castArray = [];
 
-    for (var index = 0; index < $(cast).length; index += 1) {
+    for (var index = 0; index < $(cast).length - 1; index += 1) {
         let name = $(cast + ' img').eq(index).attr('alt');
         let img = $(cast + ' img').eq(index).attr('src');
         let role = $(cast + ' .character div').eq(index).text().trim();
@@ -51,13 +51,11 @@ module.exports.parseFullMovie = (selector, html) => {
 
     }
 
-    castArray.pop();
-
     const categoriesArray = [];
     $(categories).each((index, item) => {
-        categoriesArray.push({
-            category: $(item).html()
-        });
+        categoriesArray.push(
+            $(item).html()
+        );
     });
 
     let movie = {

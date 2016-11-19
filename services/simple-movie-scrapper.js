@@ -13,19 +13,38 @@ require("./../config/mongoose")(constants.connectionString);
 
 let urlsQueue = queuesFactory.getQueue();
 
+const imdbHostString = "http://www.imdb.com";
+
 function getMoviesFromUrl(url, selector) {
-    console.log(`Working with ${url}`);
+    //console.log(`Working with ${url}`);
     httpRequester.get(url)
         .then((result) => {
             const html = result.body;
             return htmlParser.parseSimpleMovie(selector, html);
         })
         .then(movies => {
-            let dbMovies = movies.map(movie => {
-                return modelsFactory.getSimpleMovie(movie.title, movie.url);
-            });
+            movies.forEach(function (movie) {
+                httpRequester.get(imdbHostString + movie.url)
+                    .then((result) => {
+                        return htmlParser.parseFullMovie(result.body);
+                    })
+                    .then(movie => {
+                        movie = modelsFactory.getFullMovie(
+                            movie.coverImageLink,
+                            movie.trailer,
+                            movie.title,
+                            movie.description,
+                            movie.categories,
+                            Date.now(),
+                            movie.actors
+                        );
 
-            modelsFactory.insertManySimpleMovies(dbMovies);
+                        modelsFactory.insertFullMovie(movie);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }, this);
 
             return awaiter(1000);
         })
