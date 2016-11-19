@@ -24,49 +24,51 @@ module.exports.parseSimpleMovie = (selector, html) => {
         });
 };
 
-module.exports.parseFullMovie = (selector, html) =>{
-     $("body").html(html);
-     
-const title = '.title_wrapper h1';
-const description = '.plot_summary_wrapper .summary_text';
-const cover = '.poster img';
-const categories = '.subtext .itemprop';
-const cast = '#titleCast tr';
-const trailer='.slate_wrapper .slate a';
- 
-const castArray=[];
+module.exports.parseFullMovie = (selector, html) => {
+    $("body").html(html);
 
-for (var index = 0; index < $(cast).length; index+=1) {
-  let name = $(cast +' img').eq(index).attr('alt');
-    let img=$(cast +' img').eq(index).attr('src');
-    let role = $(cast +' .character div').eq(index).text().trim();
-    let id = $(cast +' .itemprop a').eq(index).attr('href');
+    const title = '.title_wrapper h1';
+    const description = '.plot_summary_wrapper .summary_text';
+    const cover = '.poster img';
+    const categories = '.subtext .itemprop';
+    const cast = '#titleCast tr';
+    const trailer = '.slate_wrapper .slate a';
 
-    castArray.push({
-        name, 
-        img,
-        role,
-        id
+    const castArray = [];
+
+    for (var index = 0; index < $(cast).length; index += 1) {
+        let name = $(cast + ' img').eq(index).attr('alt');
+        let img = $(cast + ' img').eq(index).attr('src');
+        let role = $(cast + ' .character div').eq(index).text().trim();
+        let id = $(cast + ' .itemprop a').eq(index).attr('href');
+
+        castArray.push({
+            name,
+            img,
+            role,
+            id
+        });
+
+    }
+
+    castArray.pop();
+
+    const categoriesArray = [];
+    $(categories).each((index, item) => {
+        categoriesArray.push({
+            category: $(item).html()
+        });
     });
-    
-}
 
-castArray.pop();
-
-const categoriesArray=[];
-$(categories).each((index,item)=>{
-       categoriesArray.push( {category: $(item).html()});
-            });
-
-        let movie={
-            coverImageLink: $(cover).attr('src') ,
-            trailer:$(trailer).attr('href'),
-            title: $(title).text().trim(),
-            description: $(description).html().trim(),
-            categories:categoriesArray,
-            //releaseDate:,
-            actors:castArray
-        };
+    let movie = {
+        coverImageLink: $(cover).attr('src'),
+        trailer: $(trailer).attr('href'),
+        title: $(title).text().trim(),
+        description: $(description).html().trim(),
+        categories: categoriesArray,
+        //releaseDate:,
+        actors: castArray
+    };
 
     return Promise.resolve()
         .then(() => {

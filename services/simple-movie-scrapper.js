@@ -37,7 +37,9 @@ function getMoviesFromUrl(url, selector) {
             getMoviesFromUrl(urlsQueue.pop());
         })
         .catch((err) => {
-            console.dir(err, { colors: true });
+            console.dir(err, {
+                colors: true
+            });
         });
 }
 
@@ -50,7 +52,9 @@ let start = function start(pagesCount, genres) {
         }
     });
 
-    Array.from({ length: pagesCount })
+    Array.from({
+            length: pagesCount
+        })
         .forEach(() => getMoviesFromUrl(urlsQueue.pop(), constants.simpleMovieCssSelector));
 
 }
