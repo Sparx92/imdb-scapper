@@ -73,3 +73,59 @@ module.exports.parseFullMovie = (selectors, html) => {
             return movie;
         });
 };
+
+module.exports.parseActor = (html) => {
+    $("body").html(html);
+
+    const profileImage = "#name-poster";
+    const name = "#overview-top .header span";
+    const biography = "#name-bio-text .inline";
+    const moviesName = "#filmography .filmo-category-section:first .filmo-row b a";
+    const moviesImdbId = "#filmography .filmo-category-section:first .filmo-row b a";
+    const moviesCharacterName = "#filmography .filmo-category-section:first .filmo-row";
+
+    const movies = [];
+
+    const moviesNames = $(moviesName);
+    const moviesIds = $(moviesImdbId);
+    const moviesCharacters = $(moviesCharacterName);
+
+    for (let i = 0; i < $(moviesName).length; i += 1) {
+        let character = moviesCharacters.eq(i).text().split('\n');
+
+        if (character[character.length - 2] == '') {
+            character = character[character.length - 3];
+        } else {
+            if (character[character.length - 2].indexOf('(') == 0) {
+                character = character[character.length - 3];
+            } else {
+                character = character[character.length - 2];
+            }
+        }
+
+        let movie = {
+            name: moviesNames.eq(i).html(),
+            imdbId: moviesIds.eq(i).attr('href'),
+            characterName: character
+        };
+
+        movies.push(movie);
+    }
+
+    let actorName = $(name).text();
+    let image = $(profileImage).attr('src');
+    let description = $(biography).text().split('   ')[0];
+
+
+    let actor = {
+        actorName,
+        image,
+        description,
+        movies
+    };
+
+    return Promise.resolve()
+        .then(() => {
+            return actor;
+        });
+};
